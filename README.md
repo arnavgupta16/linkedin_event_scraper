@@ -21,8 +21,8 @@ This Python script automatically scrapes profile URLs of attendees from LinkedIn
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/linkedin-event-scraper.git
-cd linkedin-event-scraper
+git clone https://github.com/arnavgupta16/linkedin_event_scraper
+cd linkedin_event_scraper
 ```
 
 2. Create a virtual environment (recommended):
@@ -42,7 +42,7 @@ pip install -r requirements.txt
 
 2. Run the script:
 ```bash
-python linkedin_scraper.py
+python main.py
 ```
 
 3. When prompted, log in to LinkedIn:
