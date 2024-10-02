@@ -8,6 +8,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 import random
+from selenium import webdriver
 
 def load_cookies(driver, cookies_file):
     if os.path.exists(cookies_file):
@@ -212,9 +213,14 @@ def main():
     csv_output_file = 'linkedin_profile_urls.csv'
     log_file = 'scraping_log.txt'
     
+    # Specify the path to your Chrome driver here
+    chrome_driver_path = r"C:\path\to\your\chromedriver.exe"  # Update this path
+    
     options = webdriver.ChromeOptions()
     options.add_argument("user-data-dir=selenium")  # This will store the session data
-    driver = webdriver.Chrome(options=options)
+    
+    # Initialize the driver with the specified path
+    driver = webdriver.Chrome(executable_path=chrome_driver_path, options=options)
     
     history = load_history(history_file)
     failed_events = []
