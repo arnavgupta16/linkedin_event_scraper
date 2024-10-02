@@ -7,10 +7,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
+import random
 
 def load_cookies(driver, cookies_file):
     if os.path.exists(cookies_file):
@@ -113,6 +110,7 @@ def get_event_attendees(driver, event_url):
         page = 1
         consecutive_empty_pages = 0
         max_consecutive_empty = 3  # Stop after 3 consecutive empty pages
+        profiles_since_last_pause = 0
         
         while True:  # We'll use other conditions to break the loop
             current_url = f"{base_attendees_url}&page={page}"
@@ -153,9 +151,18 @@ def get_event_attendees(driver, event_url):
                         if clean_url not in profile_urls:
                             profile_urls.add(clean_url)
                             new_urls += 1
+                            profiles_since_last_pause += 1
                 
                 print(f"Found {new_urls} new profile URLs on page {page}")
                 print(f"Total unique profile URLs so far: {len(profile_urls)}")
+                
+                # Check if we need to pause
+                if profiles_since_last_pause >= 100:
+                    pause_duration = random.randint(180, 240)  # 3-4 minutes in seconds
+                    print(f"Extracted {profiles_since_last_pause} profiles. Pausing for {pause_duration} seconds...")
+                    time.sleep(pause_duration)
+                    profiles_since_last_pause = 0
+                    print("Resuming extraction...")
                 
                 # If we didn't find any new URLs on this page, increment empty counter
                 if new_urls == 0:
